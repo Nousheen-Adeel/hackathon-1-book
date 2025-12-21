@@ -1,55 +1,88 @@
-# [PROJECT_NAME] Constitution
-<!-- Example: Spec Constitution, TaskFlow Constitution, etc. -->
+# Physical AI & Humanoid Robotics Book Constitution
 
 ## Core Principles
 
-### [PRINCIPLE_1_NAME]
-<!-- Example: I. Library-First -->
-[PRINCIPLE_1_DESCRIPTION]
-<!-- Example: Every feature starts as a standalone library; Libraries must be self-contained, independently testable, documented; Clear purpose required - no organizational-only libraries -->
+### I. Technical Accuracy & Industry Alignment
+Content must be technically accurate and reflect current industry practices in physical AI and humanoid robotics. All concepts, algorithms, and implementations should align with state-of-the-art research and commercial applications in the field.
 
-### [PRINCIPLE_2_NAME]
-<!-- Example: II. CLI Interface -->
-[PRINCIPLE_2_DESCRIPTION]
-<!-- Example: Every library exposes functionality via CLI; Text in/out protocol: stdin/args → stdout, errors → stderr; Support JSON + human-readable formats -->
+### II. Beginner-to-Advanced Learning Flow
+Structure content to guide readers from fundamental concepts to advanced implementations. Each chapter builds incrementally on previous knowledge, ensuring beginners can follow while providing depth for advanced readers.
 
-### [PRINCIPLE_3_NAME]
-<!-- Example: III. Test-First (NON-NEGOTIABLE) -->
-[PRINCIPLE_3_DESCRIPTION]
-<!-- Example: TDD mandatory: Tests written → User approved → Tests fail → Then implement; Red-Green-Refactor cycle strictly enforced -->
+### III. Hands-On, Project-Driven Learning
+Every concept must be accompanied by practical, implementable projects. Readers learn by building real systems, implementing algorithms, and working with actual robotics platforms and simulation environments.
 
-### [PRINCIPLE_4_NAME]
-<!-- Example: IV. Integration Testing -->
-[PRINCIPLE_4_DESCRIPTION]
-<!-- Example: Focus areas requiring integration tests: New library contract tests, Contract changes, Inter-service communication, Shared schemas -->
+### IV. Open-Source Friendly Approach
+All code examples, projects, and tools should leverage open-source technologies wherever possible. Promote community engagement through open-source robotics frameworks like ROS, Gazebo, PyBullet, and other accessible tools.
 
-### [PRINCIPLE_5_NAME]
-<!-- Example: V. Observability, VI. Versioning & Breaking Changes, VII. Simplicity -->
-[PRINCIPLE_5_DESCRIPTION]
-<!-- Example: Text I/O ensures debuggability; Structured logging required; Or: MAJOR.MINOR.BUILD format; Or: Start simple, YAGNI principles -->
+### V. Python & AI Foundation Assumption
+Content assumes readers have Python programming skills and basic AI/machine learning knowledge. Build upon these foundations to introduce robotics-specific concepts without re-teaching basic programming or AI principles.
 
-### [PRINCIPLE_6_NAME]
+### VI. Accessible Hardware & Simulation Focus
+Emphasize simulation environments and affordable hardware options to make content accessible. Prioritize tools that students can use without expensive robotics hardware, while providing paths to real hardware implementation.
 
+## Target Audience & Prerequisites
 
-[PRINCIPLE__DESCRIPTION]
+### Primary Audience
+- Computer science and engineering students
+- AI/robotics researchers and practitioners
+- Software engineers transitioning to robotics
+- Graduate students in robotics programs
 
-## [SECTION_2_NAME]
-<!-- Example: Additional Constraints, Security Requirements, Performance Standards, etc. -->
+### Prerequisites
+- Proficient Python programming skills
+- Basic understanding of AI and machine learning concepts
+- Linear algebra and calculus fundamentals
+- Basic physics knowledge (mechanics)
 
-[SECTION_2_CONTENT]
-<!-- Example: Technology stack requirements, compliance standards, deployment policies, etc. -->
+## Scope & Content Coverage
 
-## [SECTION_3_NAME]
-<!-- Example: Development Workflow, Review Process, Quality Gates, etc. -->
+### In Scope
+- Physical AI algorithms (control theory, motion planning, perception)
+- Humanoid robotics kinematics and dynamics
+- Simulation environments (Gazebo, PyBullet, Mujoco)
+- ROS (Robot Operating System) integration
+- Locomotion and balance control
+- Sensor fusion and perception
+- Reinforcement learning for robotics
+- Human-robot interaction
+- Ethics and safety in robotics
 
-[SECTION_3_CONTENT]
-<!-- Example: Code review requirements, testing gates, deployment approval process, etc. -->
+### Out of Scope
+- Detailed mechanical engineering (CAD, manufacturing)
+- Low-level embedded systems programming
+- Proprietary commercial robotics platforms
+- Advanced control theory mathematics beyond practical application
+
+## Content Standards
+
+### Quality Requirements
+- All code examples must be tested and functional
+- Projects must be reproducible on standard development environments
+- Mathematical concepts explained with visual aids and practical examples
+- Regular updates to reflect evolving field standards
+
+### Technical Standards
+- Use Python 3.8+ with standard scientific computing stack
+- Leverage popular libraries: NumPy, SciPy, PyTorch, TensorFlow
+- ROS 2 (latest stable) for robotics communication
+- Simulation environments that run on consumer hardware
+
+## Development Workflow
+
+### Content Creation Process
+- Each chapter follows: Concept → Implementation → Project → Exercises
+- Code examples undergo peer review before inclusion
+- Projects must be tested on multiple platforms
+- Regular feedback integration from beta readers
+
+### Review & Quality Assurance
+- Technical accuracy verified by robotics experts
+- Code examples tested in clean environments
+- Student feedback incorporated iteratively
+- Industry practitioners validate real-world relevance
 
 ## Governance
-<!-- Example: Constitution supersedes all other practices; Amendments require documentation, approval, migration plan -->
 
-[GOVERNANCE_RULES]
-<!-- Example: All PRs/reviews must verify compliance; Complexity must be justified; Use [GUIDANCE_FILE] for runtime development guidance -->
+This constitution guides all content creation for the "Physical AI & Humanoid Robotics" book. All chapters, examples, and projects must align with these principles. Amendments require technical review and validation against learning objectives.
 
-**Version**: [CONSTITUTION_VERSION] | **Ratified**: [RATIFICATION_DATE] | **Last Amended**: [LAST_AMENDED_DATE]
-<!-- Example: Version: 2.1.1 | Ratified: 2025-06-13 | Last Amended: 2025-07-16 -->
+**Version**: 1.0.0 | **Ratified**: 2025-12-18 | **Last Amended**: 2025-12-18

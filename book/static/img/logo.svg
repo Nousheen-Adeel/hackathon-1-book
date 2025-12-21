@@ -1,0 +1,14 @@
+<svg width="64" height="64" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+  <rect width="64" height="64" fill="#0f172a" rx="12"/>
+  <g transform="translate(16, 16)">
+    <rect x="4" y="2" width="20" height="20" fill="none" stroke="#00E6FF" stroke-width="2.5" rx="3"/>
+    <circle cx="10" cy="10" r="2.5" fill="#00E6FF"/>
+    <circle cx="18" cy="10" r="2.5" fill="#00E6FF"/>
+    <circle cx="14" cy="18" r="2.5" fill="#00E6FF"/>
+    <path d="M10 12 L14 14 L18 12" stroke="#00E6FF" stroke-width="2" fill="none"/>
+    <rect x="2" y="10" width="24" height="10" fill="none" stroke="#6C5CE7" stroke-width="2.5" rx="1.5"/>
+  </g>
+  <text x="80" y="40" fill="#00E6FF" font-family="Arial, sans-serif" font-size="14" font-weight="bold" text-anchor="start" dominant-baseline="middle">
+    Physical AI
+  </text>
+</svg>

@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Physical AI & Humanoid Robotics - RAG Chat</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f5f7fa;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            text-align: center;
+            padding: 30px 0;
+            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            color: white;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        .chat-container {
+            display: flex;
+            gap: 30px;
+            height: calc(100vh - 250px);
+        }
+
+        .chat-history {
+            flex: 3;
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .input-section {
+            flex: 1;
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .message {
+            padding: 15px;
+            border-radius: 8px;
+            max-width: 80%;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .user-message {
+            background-color: #e3f2fd;
+            align-self: flex-end;
+            border-bottom-right-radius: 0;
+        }
+
+        .bot-message {
+            background-color: #f1f8e9;
+            align-self: flex-start;
+            border-bottom-left-radius: 0;
+        }
+
+        .sources {
+            margin-top: 10px;
+            padding: 10px;
+            background-color: #fff8e1;
+            border-radius: 5px;
+            font-size: 0.9rem;
+        }
+
+        .sources-title {
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: #5d4037;
+        }
+
+        .source-item {
+            margin: 3px 0;
+            color: #795548;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+            margin-bottom: 15px;
+        }
+
+        input[type="text"]:focus {
+            outline: none;
+            border-color: #2575fc;
+        }
+
+        button {
+            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            color: white;
+            border: none;
+            padding: 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: bold;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+
+        button:disabled {
+            background: #cccccc;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(0,0,0,.1);
+            border-radius: 50%;
+            border-top-color: #2575fc;
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .error {
+            color: #f44336;
+            padding: 10px;
+            background-color: #ffebee;
+            border-radius: 5px;
+            margin-top: 10px;
+        }
+
+        footer {
+            text-align: center;
+            padding: 20px;
+            color: #777;
+            font-size: 0.9rem;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Physical AI & Humanoid Robotics</h1>
+            <div class="subtitle">Ask questions about the textbook using our RAG-powered chatbot</div>
+        </header>
+
+        <div class="chat-container">
+            <div class="chat-history" id="chatHistory">
+                <div class="message bot-message">
+                    Hello! I'm your AI assistant for the Physical AI & Humanoid Robotics textbook. Ask me anything about the book content!
+                </div>
+            </div>
+
+            <div class="input-section">
+                <h2>Ask a Question</h2>
+                <p>Enter your question below to get answers based on the textbook content.</p>
+                
+                <input type="text" id="questionInput" placeholder="Type your question here..." />
+                
+                <button id="sendButton">Send Question</button>
+                
+                <div id="statusMessage"></div>
+            </div>
+        </div>
+
+        <footer>
+            RAG Chat System for Physical AI & Humanoid Robotics Textbook
+        </footer>
+    </div>
+
+    <script>
+        // DOM elements
+        const chatHistory = document.getElementById('chatHistory');
+        const questionInput = document.getElementById('questionInput');
+        const sendButton = document.getElementById('sendButton');
+        const statusMessage = document.getElementById('statusMessage');
+
+        // Add message to chat history
+        function addMessage(role, content, sources = null) {
+            const messageDiv = document.createElement('div');
+            messageDiv.classList.add('message');
+            messageDiv.classList.add(role === 'user' ? 'user-message' : 'bot-message');
+            
+            messageDiv.textContent = content;
+            
+            if (sources && sources.length > 0) {
+                const sourcesDiv = document.createElement('div');
+                sourcesDiv.classList.add('sources');
+                
+                const sourcesTitle = document.createElement('div');
+                sourcesTitle.classList.add('sources-title');
+                sourcesTitle.textContent = 'Sources:';
+                
+                sourcesDiv.appendChild(sourcesTitle);
+                
+                sources.forEach(source => {
+                    const sourceItem = document.createElement('div');
+                    sourceItem.classList.add('source-item');
+                    sourceItem.textContent = '• ' + source;
+                    sourcesDiv.appendChild(sourceItem);
+                });
+                
+                messageDiv.appendChild(sourcesDiv);
+            }
+            
+            chatHistory.appendChild(messageDiv);
+            
+            // Scroll to bottom
+            chatHistory.scrollTop = chatHistory.scrollHeight;
+        }
+
+        // Show loading state
+        function setLoading(isLoading) {
+            if (isLoading) {
+                sendButton.disabled = true;
+                sendButton.innerHTML = '<div class="loading"></div>';
+                statusMessage.innerHTML = 'Processing your question...';
+                statusMessage.className = 'loading';
+            } else {
+                sendButton.disabled = false;
+                sendButton.textContent = 'Send Question';
+                statusMessage.innerHTML = '';
+                statusMessage.className = '';
+            }
+        }
+
+        // Show error message
+        function showError(errorMsg) {
+            const errorDiv = document.createElement('div');
+            errorDiv.classList.add('error');
+            errorDiv.textContent = errorMsg;
+            statusMessage.appendChild(errorDiv);
+        }
+
+        // Send question to backend
+        async function sendQuestion(question) {
+            try {
+                setLoading(true);
+
+                // Add user message to chat
+                addMessage('user', question);
+
+                // Use configurable API base URL with fallback
+                const apiBaseUrl = window.API_BASE_URL || '';
+                const endpoint = `${apiBaseUrl}/chat`;
+
+                // Call backend API - using relative path for CORS safety
+                const response = await fetch(endpoint, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        query: question,
+                        top_k: 5
+                    })
+                });
+
+                if (!response.ok) {
+                    throw new Error(`Server error: ${response.status}`);
+                }
+
+                const data = await response.json();
+
+                // Add bot response to chat
+                addMessage('bot', data.answer, data.sources);
+
+                // Clear input
+                questionInput.value = '';
+            } catch (error) {
+                console.error('Error:', error);
+                // Clear chat history of the temporary user message if there was an error
+                const messages = chatHistory.querySelectorAll('.message');
+                if (messages.length > 0) {
+                    chatHistory.removeChild(messages[messages.length - 1]);
+                }
+                // Add error message as bot response
+                addMessage('bot', 'System Error');
+            } finally {
+                setLoading(false);
+            }
+        }
+
+        // Event listeners
+        sendButton.addEventListener('click', () => {
+            const question = questionInput.value.trim();
+            if (question) {
+                sendQuestion(question);
+            }
+        });
+
+        questionInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                const question = questionInput.value.trim();
+                if (question) {
+                    sendQuestion(question);
+                }
+            }
+        });
+
+        // Initial focus on input
+        questionInput.focus();
+    </script>
+</body>
+</html>

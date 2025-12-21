@@ -1,0 +1,29 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(dir .specifymemory)",
+      "Bash(git fetch --all --prune)",
+      "Bash(.specify/scripts/powershell/create-new-feature.ps1 -Json \"Specify the full book structure based on the provided curriculum.\nBreak it into:\n- Parts\n- Chapters\n- Sections\nFor each chapter, define:\n- Learning goals\n- Key technologies\n- Practical outcomes\nAlign with ROS 2, Gazebo, NVIDIA Isaac, and VLA.\" --json --number 1 --short-name \"book-structure\")",
+      "Bash(dir specs)",
+      "Bash(.specify/scripts/powershell/check-prerequisites.ps1 -Json -PathsOnly)",
+      "Bash(.specify/scripts/powershell/setup-plan.ps1 -Json)",
+      "Bash(dir specs/1-book-structure/)",
+      "Bash(.specify/scripts/powershell/check-prerequisites.ps1 -Json)",
+      "Bash(.specify/scripts/powershell/check-prerequisites.ps1 -Json -RequireTasks -IncludeTasks)",
+      "Bash(dir specs/1-book-structure/checklists/)",
+      "Bash(dir)",
+      "Bash(npm start)",
+      "Bash(npm install)",
+      "Bash(npx docusaurus start)",
+      "Bash(npx docusaurus build)",
+      "Bash(npm install prism-react-renderer@^2.3.1)",
+      "Bash(dir \"C:\\\\Users\\\\Dell\\\\ai-book\\\\book\\\\node_modules\\\\prism-react-renderer\\\\themes\")",
+      "Bash(dir \"C:\\\\Users\\\\Dell\\\\ai-book\\\\book\\\\node_modules\\\\prism-react-renderer\" -Recurse)",
+      "Bash(findstr themes)",
+      "Bash(dir \"C:\\\\Users\\\\Dell\\\\ai-book\\\\book\\\\node_modules\\\\prism-react-renderer\" /s)",
+      "Bash(powershell \"Get-ChildItem -Path ''C:\\\\Users\\\\Dell\\\\ai-book\\\\book\\\\node_modules\\\\prism-react-renderer'' -Recurse | Where-Object { $_Name -like ''*theme*'' }\")",
+      "Bash(dir \"C:\\\\Users\\\\Dell\\\\ai-book\\\\book\\\\node_modules\\\\prism-react-renderer\\\\dist\")",
+      "Bash(dir \"C:\\\\Users\\\\Dell\\\\ai-book\\\\book\\\\docs\\\\part-i-foundations\\\\chapter-1-introduction\")"
+    ]
+  }
+}
