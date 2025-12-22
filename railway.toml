@@ -1,0 +1,15 @@
+# Railway configuration file
+
+[build]
+builder = "NIXPACKS"
+
+[deploy]
+numReplicas = 1
+region = "auto"
+restartPolicyType = "ON_FAILURE"
+restartPolicyMaxRetries = 3
+
+[variables]
+# Default environment variables for the project
+NODE_VERSION = "18"
+PYTHON_VERSION = "3.11"

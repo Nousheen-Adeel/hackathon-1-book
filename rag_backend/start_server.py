@@ -9,12 +9,17 @@ load_dotenv()
 try:
     # Import after loading environment
     from main import app
+
+    # Get port from environment variable, default to 8000
+    port = int(os.getenv("PORT", 8000))
+    host = os.getenv("HOST", "0.0.0.0")  # Use 0.0.0.0 for Railway deployment
+
     print("Application imported successfully")
-    print(f"Starting server on http://127.0.0.1:8000")
-    
-    # Start the server
-    uvicorn.run(app, host='127.0.0.1', port=8000, log_level='info')
-    
+    print(f"Starting server on http://{host}:{port}")
+
+    # Start the server with dynamic port
+    uvicorn.run(app, host=host, port=port, log_level='info')
+
 except Exception as e:
     print(f"Error starting server: {e}")
     import traceback
