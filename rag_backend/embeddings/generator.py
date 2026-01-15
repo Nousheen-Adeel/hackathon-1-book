@@ -1,67 +1,58 @@
-import numpy as np
-from typing import List
-import logging
 import os
-import requests
+import logging
+from typing import List
+from openai import OpenAI
 from dotenv import load_dotenv
 
 load_dotenv()
-
 logger = logging.getLogger(__name__)
 
 class EmbeddingGenerator:
-    """Generate embeddings using OpenAI-compatible API for Qwen"""
-    
-    def __init__(self):
-        self.api_key = os.getenv("OPENROUTER_API_KEY")
-        self.model = os.getenv("EMBEDDING_MODEL", "nvidia/nv-embed-v1")
-        self.base_url = os.getenv("OPENROUTER_BASE_URL", "https://openrouter.ai/api/v1")
-        
-        if not self.api_key:
-            raise ValueError("OPENROUTER_API_KEY environment variable is required")
-    
-    def generate_embeddings(self, texts: List[str]) -> List[List[float]]:
-        """
-        Generate embeddings for a list of texts using OpenRouter API
-        """
-        headers = {
-            "Authorization": f"Bearer {self.api_key}",
-            "Content-Type": "application/json"
-        }
+    """Generate embeddings using OpenAI API"""
 
-        # Prepare the request payload
-        payload = {
-            "model": self.model,
-            "input": texts,
-            "encoding_format": "float"
-        }
+    def __init__(self):
+        self.api_key = os.getenv("OPENAI_API_KEY")
+        self.model = os.getenv("EMBEDDING_MODEL", "text-embedding-3-small")
+
+        if not self.api_key:
+            raise ValueError("OPENAI_API_KEY is missing in .env")
+
+        # Debug info for terminal
+        print(f"--- EMBEDDING DEBUG ---")
+        print(f"Model: {self.model}")
+        print(f"API Key: {self.api_key[:10]}...")
+        print(f"-----------------------")
+
+        self.client = OpenAI(
+            api_key=self.api_key
+        )
+
+    def generate_embeddings(self, texts: List[str]) -> List[List[float]]:
+        # Sanitize input texts to remove problematic characters
+        sanitized_texts = []
+        for text in texts:
+            # Remove null characters and other problematic characters for OpenAI API
+            sanitized = text.replace('\x00', '')  # Remove null characters
+            sanitized = sanitized.replace('\ud83d', '')  # Remove surrogate characters
+            sanitized = sanitized.strip()
+            # Ensure text is not empty after sanitization
+            if sanitized:
+                sanitized_texts.append(sanitized)
+            else:
+                # If sanitized text is empty, add a placeholder to maintain alignment
+                sanitized_texts.append(" ")
 
         try:
-            response = requests.post(
-                f"{self.base_url}/embeddings",
-                headers=headers,
-                json=payload
+            response = self.client.embeddings.create(
+                model=self.model,
+                input=sanitized_texts
             )
-
-            if response.status_code != 200:
-                raise Exception(f"Embedding API request failed with status {response.status_code}: {response.text}")
-
-            response_data = response.json()
-            embeddings = [item['embedding'] for item in response_data['data']]
-
-            logger.info(f"Generated embeddings for {len(texts)} texts")
-            return embeddings
-
+            return [item.embedding for item in response.data]
         except Exception as e:
-            logger.error(f"Error generating embeddings: {str(e)}")
-            # Return mock embeddings instead of raising an exception
-            # This allows the system to continue working even if embeddings fail
-            import numpy as np
-            # Return simple mock embeddings (1536 dimensions to match expected size)
-            return [[0.01] * 1536 for _ in texts]
-    
+            logger.error(f"Embedding generation failed: {e}")
+            raise RuntimeError(f"OpenAI Error: {e}")
+
     def get_embedding(self, text: str) -> List[float]:
-        """
-        Get embedding for a single text
-        """
-        return self.generate_embeddings([text])[0]
+        # Sanitize input text to remove problematic characters
+        sanitized_text = text.replace('\x00', '').strip()
+        return self.generate_embeddings([sanitized_text])[0]

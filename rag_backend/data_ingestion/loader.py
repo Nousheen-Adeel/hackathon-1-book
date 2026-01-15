@@ -9,7 +9,27 @@ class DocumentLoader:
     """Load documents from the book/docs/ directory"""
     
     def __init__(self, docs_path: str = "../../book/docs"):
-        self.docs_path = Path(docs_path)
+        # Try multiple possible paths for flexibility
+        possible_paths = [
+            Path(docs_path),  # Original relative path
+            Path("../../../book/docs"),  # Alternative relative path
+            Path("../../book/docs"),  # Another relative path
+            Path("../book/docs"),  # Closer relative path
+            Path("./book/docs"),  # Local path
+            Path("C:/Users/Dell/ai-book/book/docs")  # Absolute path
+        ]
+
+        self.docs_path = None
+        for path in possible_paths:
+            if path.exists():
+                self.docs_path = path
+                logger.info(f"Found docs at: {path}")
+                break
+
+        if self.docs_path is None:
+            # If none of the paths work, default to original path and let it fail gracefully
+            self.docs_path = Path(docs_path)
+            logger.warning(f"Docs path not found: {self.docs_path}")
         
     def load_documents(self) -> List[Dict[str, str]]:
         """

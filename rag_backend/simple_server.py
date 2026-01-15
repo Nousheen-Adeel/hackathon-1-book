@@ -13,10 +13,21 @@ load_dotenv()
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
+from fastapi.middleware.cors import CORSMiddleware
+
 app = FastAPI(
     title="Physical AI & Humanoid Robotics RAG API",
     description="RAG system for answering questions about Physical AI & Humanoid Robotics textbook",
     version="1.0.0"
+)
+
+# Add CORS middleware to allow requests from the frontend
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:3000", "http://127.0.0.1:3000", "http://localhost:8000", "http://127.0.0.1:8000"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
 )
 
 # Import after setting up logging and environment
@@ -25,9 +36,13 @@ from api.rag_service import RAGService
 # Initialize the RAG service
 rag_service = RAGService()
 
-class ChatRequest(BaseModel):
-    query: str
+class QuestionRequest(BaseModel):
+    question: str
     top_k: Optional[int] = 5
+
+
+class ChatRequest(QuestionRequest):
+    pass
 
 class ChatResponse(BaseModel):
     answer: str
@@ -40,12 +55,12 @@ def health_check():
     return {"status": "healthy", "service": "RAG API"}
 
 @app.post("/chat", response_model=ChatResponse)
-async def chat(request: ChatRequest):
+async def chat(request: QuestionRequest):
     """
     Main chat endpoint that processes user queries using RAG
     """
     try:
-        result = await rag_service.get_answer(request.query, request.top_k)
+        result = await rag_service.get_answer(request.question, request.top_k)
         return ChatResponse(**result)
     except HTTPException:
         # Re-raise HTTP exceptions as-is

@@ -42,9 +42,10 @@ const ChatbotIntegration = () => {
           </div>
           <iframe
             id="chatbot-iframe"
-            src="/../../rag_frontend/index.html" // Adjust path as needed
+            src="/../../rag_frontend/index.html"
             title="AI Textbook Assistant"
             allow="microphone"
+            style={{ width: '100%', height: '400px', border: 'none' }}
           ></iframe>
         </div>
         <button

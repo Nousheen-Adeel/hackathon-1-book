@@ -7,10 +7,9 @@ headers = {
     "Content-Type": "application/json"
 }
 
-# Test payload
+# Test payload - using the correct field name according to QuestionRequest model
 payload = {
-    "query": "What is Physical AI?",
-    "top_k": 5
+    "question": "What is Physical AI?"
 }
 
 try:
@@ -19,3 +18,12 @@ try:
     print(f"Response: {response.text}")
 except Exception as e:
     print(f"Error: {e}")
+
+# Also test the /ask endpoint
+url = "http://localhost:8000/ask"
+try:
+    response = requests.post(url, headers=headers, data=json.dumps(payload))
+    print(f"Status Code (/ask): {response.status_code}")
+    print(f"Response (/ask): {response.text}")
+except Exception as e:
+    print(f"Error (/ask): {e}")

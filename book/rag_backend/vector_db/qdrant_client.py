@@ -43,7 +43,7 @@ class QdrantVectorDB:
                 # Using 1536 as it's common for embedding models - adjust based on actual embedding size
                 self.client.create_collection(
                     collection_name=self.collection_name,
-                    vectors_config={"size": 1536, "distance": "Cosine"},
+                    vectors_config=VectorParams(size=1536, distance=Distance.COSINE),
                 )
                 
                 # Create payload index for metadata searching

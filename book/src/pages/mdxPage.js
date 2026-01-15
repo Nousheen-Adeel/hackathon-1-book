@@ -1,7 +1,7 @@
 import React from 'react';
 import clsx from 'clsx';
 import Layout from '@theme/Layout';
-import { ChatbotIntegration } from '../components/ChatbotIntegration';
+import ChatbotIntegration from '../components/ChatbotIntegration';
 
 export default function MDXPage(props) {
   const { content: MDXContent } = props;

@@ -7,8 +7,8 @@ from dotenv import load_dotenv
 load_dotenv()
 
 try:
-    # Import after loading environment
-    from main import app
+    # Import after loading environment - use simple_server which has full RAG implementation
+    from simple_server import app
 
     # Get port from environment variable, default to 8000
     port = int(os.getenv("PORT", 8000))

@@ -3,10 +3,14 @@ from qdrant_client.http.models import PointStruct, VectorParams, Distance
 import uuid
 
 # Create a local Qdrant client
-client = QdrantClient(':memory:')
+client = QdrantClient(
+    url="https://499fc875-1fc3-46b9-8d0c-ebc329798849.us-east4-0.gcp.cloud.qdrant.io",
+    api_key="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhY2Nlc3MiOiJtIn0.1gabqxivh6-T706S8O8YrrO6haY1nm1crNdD-YUl1SU"
+)
+
 
 # Create a collection
-collection_name = 'test_collection'
+collection_name ="book_docs"
 vector_size = 1536
 
 try:
